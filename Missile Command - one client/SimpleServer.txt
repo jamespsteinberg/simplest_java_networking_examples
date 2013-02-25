@@ -1,0 +1,52 @@
+import java.net.*;  // import classes for networking
+import java.io.*;
+
+public class SimpleServer {
+	
+	public static final int PORT_NUM = 8888; // port number must match the clients
+	// port numbers can be blocked because of security reasons or you forgot to close it from a different socket program
+	// in which case switch the port number to something else (I forgot the range)
+	
+	
+    public static void main(String[] args) throws IOException {
+    	
+        ServerSocket serverSocket = null; // ServerSocket, to connect to multiple Socket(s)
+        try {
+            serverSocket = new ServerSocket(PORT_NUM); // actually starts the ServerSocket at portnumber
+        } catch (IOException e) { // gives you right error message to deal with properly
+            System.err.println("Could not listen on port: " + PORT_NUM + ".");
+            System.exit(1);
+        }
+
+        Socket clientSocket = null; // makes socket object so we can point it to the the Client computer's Socket when it connects
+        try {
+            clientSocket = serverSocket.accept(); // tries to find the Socket from the client computer to connect to the ServerSocket here
+        } catch (IOException e) { // another error check
+            System.err.println("Accept failed.");
+            System.exit(1);
+        }
+
+        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true); // data going out to client
+        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); // data going in server
+        
+        String inputLine, outputLine;
+        SimpleProtocol doStuff = new SimpleProtocol(); // access to protocol class
+
+        doStuff.setCode();
+        outputLine = "Welcome, Child Prodigy! You Have An Opportune Chance To Not Have Everyone Die! You Must Guess The Missile Codes Before They All Strike At Once! Go!";
+        out.println(outputLine); // IMPORTANT actually sends data to client
+
+        while ((inputLine = in.readLine()) != null) { // nearly infinite loop to receive client data in a non-port blocking way
+             outputLine = doStuff.processInput(inputLine); // sends client data to protocol to get response
+             out.println(outputLine); //IMPORTANT sends data to client
+             if (outputLine.equals("You Saved the World!")) // way to end program
+            	break;
+        }
+        
+	//clean up
+        out.close();
+        in.close();
+        clientSocket.close();
+        serverSocket.close();
+    }
+}

@@ -1,0 +1,31 @@
+import java.net.*;
+import java.io.*;
+
+// all code you should recognize
+// this is how the server should respond to the clients input
+
+public class SimpleProtocol {
+	
+    public String code = "";
+    
+    public void setCode() throws IOException
+    {
+    	BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+    	System.out.println("Please type in random letters and numbers: ");
+	code = console.readLine();
+    }
+    
+    public String processInput(String theInput) {
+        String theOutput = null;
+        System.out.println("Futile Guess: " + theInput + ".");
+        
+        if (theInput.equals(code)) 
+        {
+            theOutput = "You Saved the World!";
+        }
+        else{
+        	theOutput = "Try Again And Hurry Or You Will Kill Everyone! It Will All Be Your Fault!";
+        }
+        return theOutput;
+    }
+}

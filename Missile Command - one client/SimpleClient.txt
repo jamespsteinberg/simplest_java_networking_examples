@@ -1,0 +1,65 @@
+	import java.io.*;
+	import java.net.*; // import classes for networking
+
+	public class SimpleClient {
+	
+	public static final String HOST_NAME = "F-RM228-33T"; // Mr. Harris's Hostname if done in classroom
+	// must be hostname of the SERVER, not client computer
+	// to find your own hostname:
+	//	Go to start, right-click My Computer, go to Properties, Click the tab Computer Name, Read the phrase next to "Full Computer Name:"
+	// if your computer set-up is different, consult google
+
+	public static final int PORT_NUM = 8888; // port number must match the one the server creates
+	// port numbers can be blocked because of security reasons or you forgot to close it from a different socket program
+	// in which case switch the port number to something else (I forgot the range)
+		
+	    public static void main(String[] args) throws IOException {
+
+
+	        Socket smpSocket = null; // socket to connect to a ServerSocket
+	        PrintWriter out = null;
+	        BufferedReader in = null;
+
+		// catch checks for any possible errors you get
+		// You'll be thanking these lines when you can't get the program to work
+		// and you can narrow down what went wrong and get it in laymen's terms
+	        try {
+	            smpSocket = new Socket(HOST_NAME, PORT_NUM); // starts socket at that port on the server's computer (given by the hostname)
+	            out = new PrintWriter(smpSocket.getOutputStream(), true); // code that sends data out to server
+	            in = new BufferedReader(new InputStreamReader(smpSocket.getInputStream())); // receives data sent in from server
+	        } catch (UnknownHostException e) {
+	            System.err.println("Don't know about host: " + HOST_NAME + ".");
+	            System.exit(1);
+	        } catch (IOException e) {
+	            System.err.println("Couldn't get I/O for the connection to: " + HOST_NAME + ".");
+	            System.exit(1);
+	        }
+
+	        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in)); // this just reads from the console
+	        String fromServer;
+	        String fromUser;
+
+		// an nearly infinite loop that doesn't block the port
+		// block the port means the code stops and waits for the input rather than continously going while listening 
+	        while ((fromServer = in.readLine()) != null) {  // keeps looping whether server sends data or not (not blocking the port)
+	            System.out.println("Server: " + fromServer); // IMPORTANT prints data from server
+	            if (fromServer.equals("You Saved the World!")) // a way to end the loop
+	                break;
+			    
+	            fromUser = stdIn.readLine();
+	            
+		    if (fromUser != null) {
+	                System.out.println("Client: " + fromUser); 
+	                out.println(fromUser); // IMPORTANT this line actually sends the data to server
+		    }
+	        }
+
+
+		// Always clean up what you create
+		// You can block the port you were using if you don't which can be very annoying
+	        out.close();
+	        in.close();
+	        stdIn.close();
+	        smpSocket.close();
+	    }
+	}

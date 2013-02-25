@@ -1,0 +1,6 @@
+1. Put the classes SimpleServer and SimpleProtocol on one computer
+2. Put the class Simple Client on another computer (or the same if you wish....)
+3. Run SimpleServer
+4. Run SimpleClient
+
+// make sure the hostname on Client is the one from the Server computer
