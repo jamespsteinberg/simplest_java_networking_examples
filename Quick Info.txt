@@ -1,0 +1,45 @@
+Networking
+
+TCP: A reliable way to send code, order sent is same received, delivery is guaranteed
+UDP: A quick way to send code, order not guaranteed, delivery not guaranteed
+
+
+TCP Types of Networking
+	1. URL: Reads the source code from webpages 
+		// good for getting up-to-date info on weather, stocks, etc
+	2. URLConnection: Opens a datastream with a website server
+		// capabilities are endless: can include creating a global online game or performing mundane online tasks (like say sending all your facebook friends a message on their walls by the click of a button)
+		- Try learning how to send POST data through html forms (HTTP POST METHOD) // You could use this to get past buttons on websites (This is one way a spambot could create an account on a site and post spam instantly)
+	3. Socket / ServerSocket: Creates a two way datastream to send between computers
+		// through use of multithreading (running different code at nearly simultaneous times) possibilities are endless: creating lan game or chat in school
+		// currently, I couldn't get the clients to communicate to eachother through multithreading, please email me if you do get it
+	Notes on Socket / ServerSocket (Clients and Servers):
+		-A client can connect to only Server
+		-A Server can accept many many clients
+		-A single computer can run multiple clients and servers at once (if you want to test networking code and you only have one computer)
+		-The Server must run before any of the clients
+		- only 2 computers possible unless you use multithreading
+		- Client needs to provide hostname of server and port number
+		- Server needs to provide port number
+
+UDP Types of Networking
+	1. DatagramPacket/DatagramSocket/MulticastSocket: Independent packet of information from server to client or vice-versa (no dedicated sockets needed)
+	
+	Notes on DatagramPacket/DatagramSocket/MulticastSocket: 
+		-As far as I know, basically same rules as Socket/ServerSocket except the Client needs to provide only the hostname
+		-Can broadcast from Server to all Clients at once
+		- not entirely sure on this subject, email me if you understand it
+
+
+Final Word:
+
+	I Provide an example of URL, a Socket/ServerSocket program, and a Socket/ServerSocket program with multithreading so its across more than 2 computers
+
+	When you create something cool with the code I have provided to play with, email it to me.
+	It is only fair that since I gave you a starting point, you give me games to play with...and I might learn something too.
+
+Resource:
+	
+	This site is the most help you'll get outside of me and google
+
+		http://java.sun.com/docs/books/tutorial/networking/index.html
