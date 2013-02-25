@@ -1,0 +1,43 @@
+import java.net.*; // import the classes you need for networking
+import java.io.*;
+
+//If this code recieves a stacking error, you need to set a proxy on your command line:
+//java -Dhttp.proxyHost=proxyhost
+//[-Dhttp.proxyPort=portNumber] URLReader
+
+
+// Note: This is much much easiar if you understand html and possibly bits of javascript
+
+public class URLreader {
+    public static void main(String[] args) throws Exception {
+	URL yahoo = new URL("http://finance.yahoo.com/q?s=^IXIC&d=t"); // Website it reads
+
+	BufferedReader in = new BufferedReader(new InputStreamReader(yahoo.openStream())); // in gets all the source code from the website page
+
+	String inputLine;
+	
+	String findLine = "Index Value:"; // a unique part of a certain line of the source code so I can find the line I'm looking for in the while loop
+	String firstPlace = "<span id=\"yfs_l10_^ixic\">"; // if you look at the source code on yahoo, the nasdaq number always starts after this html code
+	String secondPlace = "</span></b></big></td></tr>"; // this source comes immediately after the nasdaq number on the yahoo page
+	
+	inputLine = in.readLine(); // similar to reading from the console? Even more so for reading from a text file
+	// in.readLine(); gets the first line of the source code. You can check this by going to the website yourself
+	
+
+	// inputLine == null after the last line of source code, this is to stop the program from being an infinite loop
+	// IMPORTANT: .contains() doesn't work on metroworks ~~ there's a million other ways to do the same thing though
+	// .contains is a boolean that returns true if that line of code contains the string
+	while (!(inputLine.contains(findLine)) || inputLine == null){ 
+		inputLine = in.readLine(); // read the next line of source code
+	}	
+
+		// a quick way to make sure the only code I'm taking from the website is the NASDAQ number and nothing else from that line
+		int startPlace = inputLine.indexOf(firstPlace); 
+		int startLength = firstPlace.length();
+		int endPlace = inputLine.indexOf(secondPlace);
+		System.out.println("The Current NASDAQ is " + inputLine.substring((startPlace + startLength), endPlace) + "!");
+
+	// always "clean up" or close what you create		
+	in.close();
+    }
+}
