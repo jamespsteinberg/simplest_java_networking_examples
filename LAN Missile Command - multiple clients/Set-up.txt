@@ -1,0 +1,9 @@
+1. Put MultiProtocol, MultiServer, and MultiThread on one computer
+2. Put MultiClient on another computer (or same....)
+3. Put MultiClient on another computer and another....and another
+3. Run MultiServer
+4. Run MultiClient
+5. Run MultiClient on a different computer
+6. Run MultiClient again and again on different computers
+
+// Make sure hostname in MultiClient is the hostname of your server computer

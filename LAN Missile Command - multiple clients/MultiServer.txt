@@ -1,0 +1,29 @@
+import java.net.*; // networking classes
+import java.io.*;
+
+public class MultiServer {
+	
+	public static final int PORT_NUM = 8893; // port number, must be same as the client
+	
+    public static void main(String[] args) throws IOException {
+        ServerSocket serverSocket = null; // creates 
+        boolean listening = true;
+
+        try {
+            serverSocket = new ServerSocket(PORT_NUM);
+        } catch (IOException e) { // catches error and tells you in laymen's terms
+            System.err.println("Could not listen on port: " + PORT_NUM + ".");
+            System.exit(-1);
+        }
+
+        MultiProtocol doStuff = new MultiProtocol(""); // access to protocol code
+        String theCode = doStuff.setCode(); // gets missile code first
+        
+        while (listening) // infinite loop always ready to accept more clients
+        	new MultiThread(serverSocket.accept(), theCode).start(); // opens new thread (think of it as a new copy of whatever class, in this case, MultiThread, for the client's personal use) 
+				// sends missile code into class too so Clients all have the same code
+
+	//clean up so as not to block any ports afterwards on accident
+        serverSocket.close();
+    }
+}

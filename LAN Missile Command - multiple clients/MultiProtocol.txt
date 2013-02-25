@@ -1,0 +1,61 @@
+import java.net.*;
+import java.io.*;
+
+public class MultiProtocol {
+	
+// all familiar code
+// just how the server or specifically, MultiThread reacts to the client data
+
+    public String code;
+    
+    public MultiProtocol(String input) {
+    	code = input;
+	}
+    
+	public String setCode() throws IOException
+    {
+    	BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+    		System.out.println("Please Type In Random Numbers For Your Missile Code: ");
+    		code = console.readLine(); // creates several blank lines so you guys wouldn't see it on the projector
+    		System.out.println("Code Set!");
+    		System.out.println("");
+    		System.out.println("");
+    		System.out.println("");
+    		System.out.println("");
+    		System.out.println("");
+    		
+    	return code;
+    }
+    
+    public String processInput(String theInput) {
+        String theOutput = null;
+        System.out.println("Human Guess: " + theInput);
+        
+        if (isInteger(theInput)){        
+        	if (theInput.equals(code)) 
+        	{
+        		theOutput = "The World Is Saved!";
+        	}
+        	else if ((Integer) Integer.parseInt(theInput) > (Integer) Integer.parseInt(code))
+        	{
+        		theOutput = "Too High!";
+        	}
+        	else
+        		theOutput = "Too Low!";
+        }
+        else
+        	theOutput = "Hint: Between 1 and 1,000,000,000!";
+        	
+        return theOutput;
+    }
+    
+    public Boolean isInteger(String phrase){ // checks if string is an integer
+    	try {
+    	int temp = Integer.parseInt(phrase);
+    	}
+    	catch(NumberFormatException nFE) {
+    	 return false;
+    	}
+    	return true;
+    }
+}

@@ -1,0 +1,57 @@
+	import java.io.*;
+	import java.net.*;
+
+	public class MultiClient {
+	
+	public static final String HOST_NAME = "F-RM228-33T"; // Mr. Harris's hostname
+	// make sure its the hostname of the server computer
+
+	public static final int PORT_NUM = 8893; // port number, must be same as the servers
+		
+	    public static void main(String[] args) throws IOException {
+
+	        Socket smpSocket = null;
+	        PrintWriter out = null;
+	        BufferedReader in = null;
+
+	        try {
+	            smpSocket = new Socket(HOST_NAME, PORT_NUM); // opens socket on server computer at port number
+	            out = new PrintWriter(smpSocket.getOutputStream(), true); // data to go out to server
+	            in = new BufferedReader(new InputStreamReader(smpSocket.getInputStream())); // data to go in to client
+	        } catch (UnknownHostException e) { // catch various errors
+	            System.err.println("Don't know about host"  + HOST_NAME + ".");
+	            System.exit(1);
+	        } catch (IOException e) {
+	            System.err.println("Couldn't get IO for the connection to"  + HOST_NAME + ".");
+	            System.exit(1);
+	        }
+
+	        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in)); // console reading
+	        String fromServer;
+	        String fromUser;
+	        
+	        System.out.println("Aliens What Is Your Name, Earthing");
+	        String name = stdIn.readLine();
+	        System.out.println(name +  "What A Pathetic Title.");
+
+	        while ((fromServer = in.readLine()) != null) { // nearly infinite loop that checks for data from server computer
+	            System.out.println("Aliens: "  + fromServer); // prints data from server
+	            if (fromServer.equals("The World Is Saved!")) // way to break loop
+	                break;
+			    
+	            fromUser = stdIn.readLine();
+	            
+		    if (fromUser != null) {
+	                System.out.println(name + ": " + fromUser);
+	                out.println(fromUser); // IMPORTANT sends data to server
+		    }
+	        }
+
+		//clean up
+	        out.close();
+	        in.close();
+	        stdIn.close();
+	        smpSocket.close();
+	    }
+	}
+

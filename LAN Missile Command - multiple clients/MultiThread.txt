@@ -1,0 +1,44 @@
+import java.net.*;
+import java.io.*;
+
+public class MultiThread extends Thread { // needs to extend thread to be a thread
+	
+    private Socket socket = null; // starts Socket to point to Client socket on the clients computer
+    public String code;
+
+    public MultiThread(Socket socket, String theCode) {
+    	super("MultiThread");  // intitializes certain things from thread constructor
+    	code = theCode; // sets missile code so its the same for every client
+    	this.socket = socket; // client Socket is represented by socket
+    }
+
+    public void run() { // the run() method is the portion of this class which becomes a new thread, meaning it will run nearly simultaneously with the other threads
+
+	try {
+	    PrintWriter out = new PrintWriter(socket.getOutputStream(), true); // data to go out to client
+	    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream())); // data to go in to server
+
+	    String inputLine, outputLine;
+	    
+        outputLine = "Welcome, Child Prodigy! You Have An Opportune Chance To Not Have Everyone Die! You Must Guess The Missile Codes Before They All Strike At Once! Go!";
+        out.println(outputLine); // IMPORTANT sends data to client
+
+        MultiProtocol doStuff = new MultiProtocol(code); // access to protocol class
+        
+	    while ((inputLine = in.readLine()) != null) { // nearly infinite loop to recieve data from client
+	    	outputLine = doStuff.processInput(inputLine); // sends data from client to protocol
+	    	out.println(outputLine); // IMPORTANT sends data to client
+	    	if (outputLine.equals("The World Is Saved!")) // way to end loop
+	    		break;
+	    	}
+
+	//clean up, close all created things
+	    out.close();
+	    in.close();
+	    socket.close();
+
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+    }
+}
